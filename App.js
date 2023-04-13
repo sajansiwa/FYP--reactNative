@@ -5,14 +5,11 @@ import { Screen } from "react-native-screens";
 import { NavigationContainer } from "@react-navigation/native";
 import { MainStackNavigator } from "./routes/navStack";
 
-
 export default function App() {
- 
-
   return (
     <Provider store={Store}>
       <NavigationContainer>
-        <MainStackNavigator/>
+        <MainStackNavigator />
       </NavigationContainer>
     </Provider>
   );

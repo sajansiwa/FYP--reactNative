@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+export function showToast(props) {
+  const { message } = props;
+  ToastAndroid.show(message, ToastAndroid.SHORT);
+}
+
 import { Login } from "../redux/slice";
 import {
   StyleSheet,
@@ -9,44 +14,43 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import axios from "axios";
 
-const LoginForm = ({navigation}) => {
-  
-
-
+const LoginForm = ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   // const isloggedIn = ((state) => state.)
 
   const handleSubmit = async () => {
+    const memail = email.toLowerCase();
     const loginPayload = {
-      email_id: email,
+      email_id: memail,
       password: password,
     };
-    console.log(loginPayload)
+    console.log(loginPayload);
 
     try {
+      setLoading(true);
       const response = await axios.post(
-        "http://192.168.31.159:4000/api/Login",
+        "http://192.168.1.68:4000/api/Login",
         loginPayload
       );
       const responseData = response.data;
       console.log(response.data);
 
-      
-        
-
       if (response.data.loggedIn) {
         navigation.navigate("HomeScreen");
         dispatch(Login(responseData));
+        setLoading(false);
       }
-
-
     } catch (error) {
+      // showToast({ message: error });s
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -69,7 +73,11 @@ const LoginForm = ({navigation}) => {
         autoCompleteType="password"
         secureTextEntry
       />
-      <Button title="Log in" onPress={handleSubmit} style={styles.button} />
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <Button title="Log in" onPress={handleSubmit} style={styles.button} />
+      )}
       <View style={styles.signupContainer}>
         <TouchableOpacity onPress={() => navigation.navigate("SignupForm")}>
           <Text style={styles.signup}>Sign Up</Text>
@@ -94,7 +102,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    height: 40, 
+    height: 40,
     width: "80%",
     borderColor: "#1B1B1B",
     backgroundColor: "#F0F8FF",
