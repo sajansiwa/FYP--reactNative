@@ -34,11 +34,11 @@ const ProfileScreen = () => {
           email: user.email_id,
         },
       });
-      console.log(`res from user is ${res.data.image}`);
-      setName(user.name);
-      setAddress(user.address);
-      setPhoneNumber(user.number);
-      setImage(user.image);
+      console.log(`res from user is ${res.data.number}`);
+      setName(res.data.name);
+      setAddress(res.data.address);
+      setPhoneNumber(res.data.number);
+      setImage(res.data.image);
     } catch (error) {
       alert(error);
     }

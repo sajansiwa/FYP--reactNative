@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  ActivityIndicator,
+} from "react-native";
 import axios from "axios";
 import { BASE_URL } from "../../constants/AppConstant";
+import { Login } from "../redux/slice";
 
 const SignupForm = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -11,6 +19,7 @@ const SignupForm = ({ navigation }) => {
   const [phoneNumber, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -21,18 +30,24 @@ const SignupForm = ({ navigation }) => {
       phoneNumber: phoneNumber,
       address: address,
       password: password,
+      isHospital: false,
     };
 
     console.log(regPayload);
 
     try {
+      setLoading(true);
       console.log(regPayload);
       const response = await axios.post(`${BASE_URL}signup`, regPayload);
       const responseData = response.data;
       console.log(responseData);
-
-      // dispatch(register(regPayload));
+      setLoading(false);
+      dispatch(Login(responseData));
+      navigation.navigate("Login", { replace: true });
+      alert(responseData.message);
     } catch (error) {
+      setLoading(false);
+      alert(error);
       console.log(error);
     }
   };
@@ -78,11 +93,15 @@ const SignupForm = ({ navigation }) => {
         autoCompleteType="password"
         secureTextEntry
       />
-      <Button
-        title="Create Account"
-        onPress={handleSubmit}
-        style={styles.button}
-      />
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <Button
+          title="Create Account"
+          onPress={handleSubmit}
+          style={styles.button}
+        />
+      )}
     </View>
   );
 };
@@ -110,7 +129,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 20,
-    color: "#F0F8FF",
+    color: "#000",
   },
   button: {
     marginTop: 20,
