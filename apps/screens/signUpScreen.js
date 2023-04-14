@@ -3,8 +3,9 @@ import { useDispatch } from "react-redux";
 
 import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 import axios from "axios";
+import { BASE_URL } from "../../constants/AppConstant";
 
-const SignupForm = ({navigation}) => {
+const SignupForm = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phoneNumber, setPhone] = useState("");
@@ -12,7 +13,6 @@ const SignupForm = ({navigation}) => {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-
 
   const handleSubmit = async () => {
     const regPayload = {
@@ -27,10 +27,7 @@ const SignupForm = ({navigation}) => {
 
     try {
       console.log(regPayload);
-      const response = await axios.post(
-        "http://192.168.31.159:4000/api/signup",
-        regPayload
-      );
+      const response = await axios.post(`${BASE_URL}signup`, regPayload);
       const responseData = response.data;
       console.log(responseData);
 
@@ -84,10 +81,8 @@ const SignupForm = ({navigation}) => {
       <Button
         title="Create Account"
         onPress={handleSubmit}
-        style={styles.button }
+        style={styles.button}
       />
-
-      
     </View>
   );
 };
@@ -110,7 +105,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: "80%",
     borderColor: "#1B1B1B",
-    backgroundColor: '#F0F8FF',
+    backgroundColor: "#F0F8FF",
     borderWidth: 1,
     borderRadius: 5,
     padding: 10,

@@ -8,9 +8,7 @@ import LoginForm from "../apps/screens/signInScreen";
 import SignupForm from "../apps/screens/signUpScreen";
 import HomeScreen from "../apps/screens/home";
 import MenuIcon from "../apps/screens/button";
-
-
-
+import HomeStack from "./HomeStack";
 
 const Stack = createStackNavigator();
 
@@ -37,6 +35,13 @@ export const MainStackNavigator = ({ navigation }) => {
       initialRouteName="Login"
     >
       <Stack.Screen
+        name="homestack"
+        component={HomeStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="Login"
         options={{ title: "Login" }}
         component={LoginForm}
@@ -45,10 +50,6 @@ export const MainStackNavigator = ({ navigation }) => {
         name="SignupForm"
         options={{ title: "Signup" }}
         component={SignupForm}
-      />
-      <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
       />
       <Stack.Screen name="Drawer" component={DrawerNavigator} />
     </Stack.Navigator>

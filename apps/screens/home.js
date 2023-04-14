@@ -55,7 +55,6 @@ const HomeScreen = ({ navigation }) => {
         hosp_email: data.email_id,
         patient_email: user.user.email_id,
       });
-      console.log(`i am checkedin ${response.data.user}`);
     } catch (error) {
       console.log(`i am checkedin error ${error}`);
     }
@@ -63,9 +62,7 @@ const HomeScreen = ({ navigation }) => {
   async function getHospitals() {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://192.168.1.68:4000/api/get-all-hospital"
-      );
+      const response = await axios.get(`${BASE_URL}get-all-hospital`);
 
       setHospitals(response.data.hosps);
       setLoading(false);
@@ -153,13 +150,10 @@ const HomeScreen = ({ navigation }) => {
       console.log("latitude1", latitude);
       console.log("longitude1", longitude);
 
-      const response = await axios.post(
-        "http://192.168.1.68:4000/api/get-nearest",
-        {
-          latitude: latitude,
-          longitude: longitude,
-        }
-      );
+      const response = await axios.post(`${BASE_URL}get-nearest`, {
+        latitude: latitude,
+        longitude: longitude,
+      });
       const nearestHospital = response.data;
 
       setNearestHospital(nearestHospital);

@@ -13,7 +13,6 @@
 //   );
 // };
 
-
 import UserProfile from "../apps/screens/profileScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import LoginForm from "../apps/screens/signInScreen";
@@ -22,13 +21,13 @@ import LoginForm from "../apps/screens/signInScreen";
 const Drawer = createDrawerNavigator();
 
 export const DrawerNavigator = () => {
-    
   return (
-    <Drawer.Navigator >
+    <Drawer.Navigator>
       {/* <Drawer.Screen
         name="Home"
         component={LoginForm}
       /> */}
+
       <Drawer.Screen name="Profile" component={UserProfile} />
       {/* <Drawer.Screen name="Settings" component={SettingsScreen} /> */}
     </Drawer.Navigator>

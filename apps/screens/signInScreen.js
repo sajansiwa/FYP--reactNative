@@ -17,6 +17,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import axios from "axios";
+import { BASE_URL } from "../../constants/AppConstant";
 
 const LoginForm = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -35,15 +36,12 @@ const LoginForm = ({ navigation }) => {
 
     try {
       setLoading(true);
-      const response = await axios.post(
-        "http://192.168.1.68:4000/api/Login",
-        loginPayload
-      );
+      const response = await axios.post(`${BASE_URL}Login`, loginPayload);
       const responseData = response.data;
       console.log(response.data);
 
       if (response.data.loggedIn) {
-        navigation.navigate("HomeScreen");
+        navigation.navigate("homestack", { replace: true });
         dispatch(Login(responseData));
         setLoading(false);
       }
