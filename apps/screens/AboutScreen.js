@@ -1,15 +1,44 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
+import { BASE_URL, IMAGE_URL } from "../../constants/AppConstant";
 
 export default AboutScreen = () => {
-  const user = useSelector((state) => state.auth.user);
+  const [user, setUser] = useState({});
+  const mUser = useSelector((state) => state.auth.user);
+  async function getprofileInfo() {
+    try {
+      const res = await axios.get(`${BASE_URL}user`, {
+        params: {
+          email: mUser.email_id,
+        },
+      });
+      setUser(res.data);
+      console.log(`image is ${user.image}`);
+    } catch (error) {
+      alert(error);
+    }
+  }
+  useEffect(() => {
+    getprofileInfo();
+  }, []);
   return (
     <View style={styles.container}>
-      <Image
-        source={user.photo ?? require("../../assets/logo.jpeg")} // Replace with your own image source
-        style={styles.avatar}
-      />
+      {user.image != null ? (
+        <Image
+          // source={`${user?.image}` ?? require("../../assets/logo.jpeg")}
+          source={{
+            uri: user.image,
+          }}
+          style={styles.avatar}
+        />
+      ) : (
+        <Image
+          source={require("../../assets/logo.jpeg")}
+          style={styles.avatar}
+        />
+      )}
       <Text style={styles.name}>{user.name}</Text>
       <Text style={styles.email}>{user.email_id}</Text>
     </View>

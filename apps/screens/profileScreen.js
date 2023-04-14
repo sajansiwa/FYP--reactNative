@@ -34,10 +34,11 @@ const ProfileScreen = () => {
           email: user.email_id,
         },
       });
-      console.log(`res from user is ${res.data}`);
+      console.log(`res from user is ${res.data.image}`);
       setName(user.name);
       setAddress(user.address);
       setPhoneNumber(user.number);
+      setImage(user.image);
     } catch (error) {
       alert(error);
     }
@@ -45,17 +46,27 @@ const ProfileScreen = () => {
 
   const updateProfilePic = async () => {
     try {
+      const listImage = image.split(".");
+      const ext = listImage[listImage.length - 1];
       var formData = new FormData();
-      formData.append("file", image);
+      formData.append("file", {
+        name: new Date().getMilliseconds() + "_profile" + `.${ext}`,
+        uri: image,
+        type: "image/jpg",
+      });
+
+      formData.append("email", user.email_id);
 
       setLoading(true);
-      await axios.post(`${BASE_URL}upload-pp/`, formData, {
-        params: { id: user.email_id },
+      await axios.post(`${BASE_URL}updateProfilePic`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       setLoading(false);
       alert("User Profile Updated");
     } catch (error) {
-      console.log(error);
+      console.log(`i am error ${error}`);
       setLoading(false);
       alert(`Error: ${error}`);
     }
@@ -77,8 +88,11 @@ const ProfileScreen = () => {
 
     console.log(result.assets[0].uri);
 
-    setImage(result.assets[0].uri);
-    updateProfilePic();
+    if (result.assets != []) {
+      setImage(result.assets[0].uri);
+      sleep(2000);
+      await updateProfilePic();
+    }
   };
 
   const handleChangeName = (text) => {
@@ -112,10 +126,12 @@ const ProfileScreen = () => {
     }
   };
 
+  async function saveImage() {}
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={pickImage}>
-        {image ? (
+        {image != null ? (
           <Image
             source={{
               uri: image,
