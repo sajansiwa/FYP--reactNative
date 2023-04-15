@@ -37,7 +37,7 @@ const ProfileScreen = () => {
       console.log(`res from user is ${res.data.number}`);
       setName(res.data.name);
       setAddress(res.data.address);
-      setPhoneNumber(res.data.number);
+      setPhoneNumber(res.data.phone_number);
       setImage(res.data.image);
     } catch (error) {
       alert(error);
@@ -74,7 +74,6 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     getprofileInfo();
-    console.log(user);
   }, []);
 
   const pickImage = async () => {
@@ -116,11 +115,12 @@ const ProfileScreen = () => {
         email: user.email_id,
       };
       setLoading(true);
-      const { data } = await axios.post(`${BASE_URL}updateUser`, payload);
+      await axios.post(`${BASE_URL}updateUser`, payload);
       alert("User Info Updated!");
       getprofileInfo();
       setLoading(false);
     } catch (error) {
+      console.log(error);
       setLoading(false);
       alert(`Error: ${error}`);
     }

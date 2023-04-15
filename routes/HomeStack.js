@@ -11,7 +11,13 @@ const Drawer = createDrawerNavigator();
 
 export default function HomeStack() {
   return (
-    <Drawer.Navigator initialRouteName="Home">
+    <Drawer.Navigator
+      initialRouteName="Home"
+      screenListeners={(prop) => {
+        if (prop.route.name == "About") {
+        }
+      }}
+    >
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="About" component={AboutScreen} />
       <Drawer.Screen name="Profile" component={ProfileScreen} />

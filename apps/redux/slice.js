@@ -12,7 +12,7 @@ const authSlice = createSlice({
     Login: (state, action) => {
       state.user = action.payload;
       state.isLoggedIn = true;
-      console.log('user:', state.user)
+      console.log("user:", state.user);
     },
   },
 });
