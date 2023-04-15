@@ -9,6 +9,7 @@ import SignupForm from "../apps/screens/signUpScreen";
 import HomeScreen from "../apps/screens/home";
 import MenuIcon from "../apps/screens/button";
 import HomeStack from "./HomeStack";
+import ForgetPassword from "../apps/screens/ForgetPassword";
 
 const Stack = createStackNavigator();
 
@@ -45,6 +46,11 @@ export const MainStackNavigator = ({ navigation }) => {
         name="Login"
         options={{ title: "Login" }}
         component={LoginForm}
+      />
+      <Stack.Screen
+        name="ForgetPassword"
+        options={{ title: "ForgetPassword" }}
+        component={ForgetPassword}
       />
       <Stack.Screen
         name="SignupForm"

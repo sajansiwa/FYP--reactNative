@@ -66,6 +66,7 @@ const ProfileScreen = () => {
       setLoading(false);
       alert("User Profile Updated");
     } catch (error) {
+      console.log(error);
       console.log(`i am error ${error}`);
       setLoading(false);
       alert(`Error: ${error}`);
@@ -77,7 +78,6 @@ const ProfileScreen = () => {
   }, []);
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,

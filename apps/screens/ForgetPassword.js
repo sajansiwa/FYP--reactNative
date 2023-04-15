@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import { Formik } from "formik";
 export function showToast(props) {
   const { message } = props;
   ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -17,9 +17,13 @@ import {
   ActivityIndicator,
 } from "react-native";
 import axios from "axios";
-import { BASE_URL } from "../../constants/AppConstant";
+import { object, string, number, date, InferType } from "yup";
 
-const LoginForm = ({ navigation }) => {
+const forgetPasswordSchema = object({
+  email_id: string().email().required(),
+});
+
+const ForgetPassword = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,71 +31,55 @@ const LoginForm = ({ navigation }) => {
   // const isloggedIn = ((state) => state.)
 
   const handleSubmit = async () => {
-    const memail = email.toLowerCase();
-    const loginPayload = {
-      email_id: memail,
-      password: password,
+    const payload = {
+      email_id: email,
     };
-    console.log(loginPayload);
 
     try {
       setLoading(true);
-      const response = await axios.post(`${BASE_URL}Login`, loginPayload);
-      const responseData = response.data;
-      console.log(response.data);
-
-      if (response.data.loggedIn) {
-        navigation.navigate("homestack", { replace: true });
-        dispatch(Login(responseData));
-        setLoading(false);
-      }
+      const response = await axios.post(`${BASE_URL}passwordreset`, payload);
+      alert(response.data.message);
     } catch (error) {
       // showToast({ message: error });s
-      console.log(error);
+      alert(response.data.message);
       setLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Log in</Text>
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email Address"
-        autoCompleteType="email"
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        autoCompleteType="password"
-        secureTextEntry
-      />
-      <TouchableOpacity
-        style={styles.forgetPassword}
-        onPress={() => navigation.navigate("ForgetPassword")}
-      >
-        <Text style={styles.forgetPasswordText}>Forget Password</Text>
-      </TouchableOpacity>
-      {loading ? (
-        <ActivityIndicator />
-      ) : (
-        <Button title="Log in" onPress={handleSubmit} style={styles.button} />
-      )}
-      <View style={styles.signupContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("SignupForm")}>
-          <Text style={styles.signup}>Sign Up</Text>
-        </TouchableOpacity>
+    <Formik
+      initialValues={{ email_id: "" }}
+      validationSchema={forgetPasswordSchema}
+    >
+      <View style={styles.container}>
+        <Text style={styles.heading}>Reset Password</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email Address"
+          autoCompleteType="email"
+          keyboardType="email-address"
+        />
+        <View style={styles.height}></View>
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <Button
+            title="Reset Password"
+            onPress={handleSubmit}
+            style={styles.button}
+          />
+        )}
       </View>
-    </View>
+    </Formik>
   );
 };
 
 const styles = StyleSheet.create({
+  height: {
+    margin: 10,
+  },
   forgetPassword: {
     marginTop: 20,
     marginBottom: 20,
@@ -142,4 +130,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginForm;
+export default ForgetPassword;
