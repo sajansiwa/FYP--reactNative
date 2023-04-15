@@ -131,7 +131,7 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={pickImage}>
-        {image != null ? (
+        {image != null && image !== "" ? (
           <Image
             source={{
               uri: image,

@@ -25,7 +25,7 @@ export default AboutScreen = () => {
   }, []);
   return (
     <View style={styles.container}>
-      {user.image !== null && user.image !== undefined ? (
+      {user.image !== null && user.image !== undefined && user.image !== "" ? (
         <Image
           // source={`${user?.image}` ?? require("../../assets/logo.jpeg")}
           source={{
