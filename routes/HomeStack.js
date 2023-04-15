@@ -19,8 +19,8 @@ export default function HomeStack() {
       }}
     >
       <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="About" component={AboutScreen} />
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
+      <Drawer.Screen name="Profile" component={AboutScreen} />
+      <Drawer.Screen name="About" component={ProfileScreen} />
       <Drawer.Screen name="ChangePassword" component={ChangePassword} />
       <Drawer.Screen name="Logout" component={LogoutScreen} options={{}} />
     </Drawer.Navigator>
