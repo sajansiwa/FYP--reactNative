@@ -65,6 +65,7 @@ const HomeScreen = ({ navigation }) => {
       const response = await axios.get(`${BASE_URL}get-all-hospital`);
 
       setHospitals(response.data.hosps);
+      // console.log("---------------------------------",response.data.hosps);
       setLoading(false);
     } catch (error) {
       console.log(`hy i am error ${error}`);
@@ -105,6 +106,7 @@ const HomeScreen = ({ navigation }) => {
     })();
 
     getHospitals();
+  
 
     return () => watchLocation.remove();
   }, []);
@@ -161,6 +163,7 @@ const HomeScreen = ({ navigation }) => {
       const destination = `${nearestHospital.name}`;
 
       const url = `https://www.google.com/maps/dir/?api=1&destination=${nearestHospital.name}&travelmode=driving`;
+      console.log(url)
       seturl(url);
       const res = await axios.get(url);
       return (directions = res.data);
@@ -168,6 +171,11 @@ const HomeScreen = ({ navigation }) => {
       console.error(error);
     }
   };
+
+  const googlemap = (name) => {
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${name}&travelmode=driving`;
+    Linking.openURL(url)
+  }
 
   return (
     <View style={styles.container}>
@@ -242,7 +250,7 @@ const HomeScreen = ({ navigation }) => {
                 <View style={styles.button}>
                   <Button
                     title="Emergency CheckIn"
-                    onPress={() => checkIn(data)}
+                    onPress={() => checkIn(data) && googlemap(data.name)}
                   />
                 </View>
               </View>
