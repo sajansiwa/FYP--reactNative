@@ -59,12 +59,16 @@ const HomeScreen = ({ navigation }) => {
       console.log(`i am checkedin error ${error}`);
     }
   }
-  async function getHospitals() {
+  async function getHospitals(props) {
     try {
       setLoading(true);
-      const response = await axios.get(`${BASE_URL}get-all-hospital`);
+      const { latitude, longitude } = props;
+      const response = await axios.post(`${BASE_URL}get-nearest`, {
+        latitude,
+        longitude,
+      });
 
-      setHospitals(response.data.hosps);
+      setHospitals(response.data);
       setLoading(false);
     } catch (error) {
       console.log(`hy i am error ${error}`);
@@ -78,6 +82,7 @@ const HomeScreen = ({ navigation }) => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.log("Permission to access location was denied");
+
         return;
       }
 
@@ -100,12 +105,14 @@ const HomeScreen = ({ navigation }) => {
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           });
+          getHospitals({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          });
         }
       );
     })();
-
-    getHospitals();
-
+    // getHospitals();
     return () => watchLocation.remove();
   }, []);
 
