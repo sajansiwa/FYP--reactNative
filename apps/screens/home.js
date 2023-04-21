@@ -168,12 +168,18 @@ const HomeScreen = ({ navigation }) => {
       const destination = `${nearestHospital.name}`;
 
       const url = `https://www.google.com/maps/dir/?api=1&destination=${nearestHospital.name}&travelmode=driving`;
+      console.log(url);
       seturl(url);
       const res = await axios.get(url);
       return (directions = res.data);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const googlemap = (name) => {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${name}&travelmode=driving`;
+    Linking.openURL(url);
   };
 
   return (
@@ -249,7 +255,7 @@ const HomeScreen = ({ navigation }) => {
                 <View style={styles.button}>
                   <Button
                     title="Emergency CheckIn"
-                    onPress={() => checkIn(data)}
+                    onPress={() => checkIn(data) && googlemap(data.name)}
                   />
                 </View>
               </View>
